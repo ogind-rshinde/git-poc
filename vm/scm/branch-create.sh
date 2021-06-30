@@ -4,21 +4,21 @@ USERNAME=$(git config user.userid)
 
 if [[ "$USERNAME" == "" ]]
 then
-    echo "$(tput setaf 1) You don't have set userid"
-    read -p "$(tput setaf 2) Please provide your github username which will be used in the branch name : "  userid
+    echo "$(tput setaf 1) Your GitHub User Account is not setup. Please setup here."
+    read -p "$(tput setaf 2) Please provide your GitHub username which will be used for creating the branches : "  userid
     git config user.userid "$userid"
-    echo " Your userid set successfully, Please run again branch-create.sh file. "
+    echo "Your GitHub Account has been setup successfully. Kindly run the branch-create.sh command once again."
     exit;
 fi
 
 branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
 echo "$(tput setaf 2) Which type of branch you want to create?: 
-1 - feature branch
-2 - Dev bug branch
-3 - QA bug branch
-4 - hotfixes bug branch
-5 - ESN bug branch"
+1 - Feature Branch
+2 - Dev Bug Branch
+3 - QA Bug Branch
+4 - Hotfixes Bug Branch
+5 - ESN Bug Branch"
 
 while :; do
   read -p "Choose the number :: " branchOption
@@ -30,14 +30,14 @@ while :; do
   fi
 done
 
-read -p "Please enter jira ticket : "  ticket
+read -p "Enter JIRA Ticket Number : "  ticket
 
 while :; do
-  read -p "$(tput setaf 2)Please enter branch description : "  description
+  read -p "$(tput setaf 2)Enter the branch description : "  description
   if (("${#description}" >= 1 && "${#description}" < 21)); then
     break
   else
-    echo "$(tput setaf 1) ********* Please enter the description less than 20 characters!!!"
+    echo "$(tput setaf 1) ********* Branch description should be less than 20 characters.!!!"
   fi
 done
 
@@ -77,4 +77,4 @@ if test "$branchOption" = 5; then
     git checkout -b "esbg-"$ticket"/"$USERNAME"/"${description,,}
 fi
 
-echo "$(tput setaf 2) ********************** Branch is created successfully ****************************"
+echo "$(tput setaf 2) ********************** Your Branch is created successfully ****************************"
