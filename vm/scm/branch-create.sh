@@ -4,8 +4,8 @@ USERNAME=$(git config user.userid)
 
 if [[ "$USERNAME" == "" ]]
 then
-    echo "$(tput setaf 1) Your GitHub User Account is not setup. Please setup here."
-    read -p "$(tput setaf 2) Please provide your GitHub username which will be used for creating the branches : "  userid
+    echo "$(tput setaf 1) Your GitHub User Account is not setup."
+    read -p "$(tput setaf 2) Please provide your GitHub username which will be used for creating the branches: "  userid
     git config user.userid "$userid"
     echo "Your GitHub Account has been setup successfully. Kindly run the branch-create.sh command once again."
     exit;
@@ -13,7 +13,7 @@ fi
 
 branch=$(git symbolic-ref HEAD | sed -e 's,.*/\(.*\),\1,')
 
-echo "$(tput setaf 2) Which type of branch you want to create?: 
+echo "$(tput setaf 2) Which type of branch do you want to create? 
 1 - Feature Branch
 2 - Dev Bug Branch
 3 - QA Bug Branch
@@ -21,23 +21,23 @@ echo "$(tput setaf 2) Which type of branch you want to create?:
 5 - ESN Bug Branch"
 
 while :; do
-  read -p "Choose the number :: " branchOption
+  read -p "Select the type of branch you want to create: " branchOption
   [[ $branchOption =~ ^[0-9]+$ ]] || { echo "Enter a valid number"; continue; }
   if ((branchOption >= 1 && branchOption <= 4)); then
     break
   else
-    echo "$(tput setaf 1) ******* number out of range, try again"
+    echo "$(tput setaf 1) ******* Selected number is out of range. Try again!"
   fi
 done
 
-read -p "Enter JIRA Ticket Number : "  ticket
+read -p "Enter JIRA Ticket Number: "  ticket
 
 while :; do
-  read -p "$(tput setaf 2)Enter the branch description : "  description
+  read -p "$(tput setaf 2)Enter the branch description: "  description
   if (("${#description}" >= 1 && "${#description}" < 21)); then
     break
   else
-    echo "$(tput setaf 1) ********* Branch description should be less than 20 characters.!!!"
+    echo "$(tput setaf 1) ********* Branch description should be less than 20 characters!"
   fi
 done
 
@@ -72,7 +72,7 @@ if test "$branchOption" = 4; then
 fi
 
 if test "$branchOption" = 5; then
-   git checkout main
+    git checkout main
     git pull origin main
     git checkout -b "esbg-"$ticket"/"$USERNAME"/"${description,,}
 fi
