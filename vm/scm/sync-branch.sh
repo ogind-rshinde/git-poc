@@ -18,6 +18,7 @@ then
     parentBranch='hotfix/next'
 fi
 
+echo "$parentBranch"
 
 if [[ "$BRANCH" != "$parentBranch" ]]
 then
@@ -27,20 +28,15 @@ then
     git pull origin $BRANCH
 fi
 
-echo $parentBranch
-exit;
-
 parentBranchCommitId=$(git log origin/$parentBranch --pretty=format:"%h" -1)
 
 isExist=$(git branch --contains $parentBranchCommitId | grep $BRANCH)
 
 if [[ "$isExist" == "" ]]
 then
-    echo "Invoke the rebase......"
-    git rebase $parentBranch
-    #git push origin $BRANCH -f
-    echo "$(tput setaf 2) **************** Rebase is initiated *************************"
+    git merge $parentBranch
+    echo "$(tput setaf 2) **************** Merge is initiated *************************"
 else
-    echo "$(tput setaf 2) ************************************************
-        ********** Your branch does not require rebase.   ****************************"
+    echo "$(tput setaf 2) 
+        *************** Your branch does not require merge.   ****************************"
 fi
